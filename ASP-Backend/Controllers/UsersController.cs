@@ -18,6 +18,12 @@ namespace ASP_Backend.Controllers
         public UsersController(DataContext context)
         {
             _context = context;
+            //User u = new User();
+            //u.CreatedAt = DateTime.Now;
+            //u.UserName = "Admin";
+            //u.Password = "asdfasdf";
+            //_context.Users.Add(u);
+            //_context.SaveChanges();
         }
         // GET: api/values
         [HttpGet]
@@ -43,6 +49,7 @@ namespace ASP_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            user.CreatedAt = DateTime.Now;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASP_Backend.Models
 {
-    public class DataContext: IdentityDbContext
+    public class DataContext : IdentityDbContext
     {
         public DataContext() { }
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
