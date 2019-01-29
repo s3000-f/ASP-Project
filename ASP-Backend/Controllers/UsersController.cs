@@ -64,6 +64,8 @@ namespace ASP_Backend.Controllers
             {
                 return BadRequest();
             }
+
+
             _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return NoContent();
