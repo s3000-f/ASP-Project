@@ -17,16 +17,23 @@ namespace ASP_Backend.Controllers
             _context = context;
         }
 
-        // GET: api/values
+        // GET: api/comments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+        public async Task<ActionResult<IEnumerable<Comment2>>> GetComments()
         {
-            return _context.Comments.ToList();
+            var cs =  _context.Comments.ToList();
+            var cs2 = new List<Comment2>();
+            foreach (var c in cs)
+            {
+                cs2.Add(new Comment2(c, _context));
+            }
+            return cs2;
+
         }
 
-        // GET api/values/5
+        // GET api/comments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetComment(long id)
+        public async Task<ActionResult<Comment2>> GetComment(long id)
         {
             var comment = await _context.Comments.FindAsync(id);
 
@@ -34,25 +41,38 @@ namespace ASP_Backend.Controllers
             {
                 return NotFound();
             }
-            return comment;
+            return new Comment2(comment,_context);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
+        //Comment Likes -----------------------------------
+        [HttpPost("{id}/like")]
+        public async Task<ActionResult<Comment2>> AddCommentLike(int id, Clike like)
         {
+            like.CreatedAt = DateTime.Now;
+            like.CommentId = id;
+            _context.Clikes.Add(like);
+            await _context.SaveChangesAsync();
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return new Comment2(comment, _context);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpDelete("{id}/like/{id2}")]
+        public async Task<ActionResult<Comment2>> RemoveCommentLike(int id, int id2)
         {
+            var l = await _context.Clikes.FindAsync(id2);
+            if (l == null)
+            {
+                return NotFound();
+            }
+            _context.Clikes.Remove(l);
+            await _context.SaveChangesAsync();
+            var comment = await _context.Comments.FindAsync(id);
+            return new Comment2(comment, _context);
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

@@ -4,7 +4,15 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>ASP_Backend</RootNamespace>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20190205160923_InitialCreate.cs" />
+    <Compile Remove="Migrations\20190205160923_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20190205161230_FinalMigration.cs" />
+    <Compile Remove="Migrations\20190205161230_FinalMigration.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />

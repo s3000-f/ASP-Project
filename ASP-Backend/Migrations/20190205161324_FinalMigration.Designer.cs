@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP_Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190129064238_Example")]
-    partial class Example
+    [Migration("20190205161324_FinalMigration")]
+    partial class FinalMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,8 +37,6 @@ namespace ASP_Backend.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Clikes");
                 });
 
@@ -52,9 +50,9 @@ namespace ASP_Backend.Migrations
 
                     b.Property<string>("Data");
 
-                    b.Property<int?>("PostId");
+                    b.Property<int>("PostId");
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -75,13 +73,11 @@ namespace ASP_Backend.Migrations
 
                     b.Property<int>("PostId");
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Likes");
                 });
@@ -289,38 +285,31 @@ namespace ASP_Backend.Migrations
 
             modelBuilder.Entity("ASP_Backend.Models.Clike", b =>
                 {
-                    b.HasOne("ASP_Backend.Models.Comment", "Comment")
+                    b.HasOne("ASP_Backend.Models.Comment")
                         .WithMany("Clikes")
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ASP_Backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("ASP_Backend.Models.Comment", b =>
                 {
                     b.HasOne("ASP_Backend.Models.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ASP_Backend.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("ASP_Backend.Models.Likes", b =>
                 {
-                    b.HasOne("ASP_Backend.Models.Post", "Post")
+                    b.HasOne("ASP_Backend.Models.Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ASP_Backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("ASP_Backend.Models.Post", b =>
@@ -328,7 +317,7 @@ namespace ASP_Backend.Migrations
                     b.HasOne("ASP_Backend.Models.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

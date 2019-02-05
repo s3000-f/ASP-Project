@@ -34,7 +34,7 @@ namespace ASP_Backend.Controllers
 
         // GET api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(long id)
+        public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -49,6 +49,13 @@ namespace ASP_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            foreach (var u in _context.Users){
+                if(u.UserName == user.UserName)
+                {
+                    return Conflict();
+                }
+            }
+           
             user.CreatedAt = DateTime.Now;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -58,7 +65,7 @@ namespace ASP_Backend.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(long id, User user)
+        public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.Id)
             {
@@ -73,7 +80,7 @@ namespace ASP_Backend.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(long id)
+        public async Task<ActionResult<User>> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
