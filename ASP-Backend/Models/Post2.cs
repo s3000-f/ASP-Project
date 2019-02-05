@@ -15,16 +15,21 @@ namespace ASP_Backend.Models
             var u = context.Users.Find(post.UserId);
             this.UserName = u.UserName;
             this.CreatedAt = post.CreatedAt;
+            this.likes = new List<int>();  
             if (post.Likes != null)
-                this.LikesCount = post.Likes.Count;
-            else
-                this.LikesCount = 0;
+            {
+                foreach (var l in post.Likes)
+                {
+                    this.likes.Add(l.UserId);
+                }
+            }
 
         }
         public DateTime CreatedAt { get; set; }
         public int LikesCount { get; set; }
         public int Id { get; set; }
         public int UserId { get; set; }
+        public List<int> likes;
         public string FileName { get; set; }
         public string UserName { get; set; }
         public string Caption { get; set; }

@@ -47,7 +47,9 @@ namespace ASP_Backend
                 app.UseHsts();
             }
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:8080").AllowAnyHeader());
+                builder.WithOrigins("http://localhost:8080").AllowAnyHeader().AllowAnyMethod());
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

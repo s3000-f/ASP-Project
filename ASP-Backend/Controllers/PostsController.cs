@@ -91,12 +91,17 @@ namespace ASP_Backend.Controllers
             {
                 return NotFound();
             }
-            var cs = post.Comments.ToList();
             var cs2 = new List<Comment2>();
-            foreach (var c in cs)
+
+            if (post.Comments != null)
             {
-                cs2.Add(new Comment2(c, _context));
+                var cs = post.Comments.ToList();
+                foreach (var c in cs)
+                {
+                    cs2.Add(new Comment2(c, _context));
+                }
             }
+            
             return cs2;
         }
 
